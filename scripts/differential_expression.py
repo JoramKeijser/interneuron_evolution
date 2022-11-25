@@ -8,7 +8,7 @@ import scanpy as sc
 
 def main():
     for dataset in ['bakken', 'tosches', 'colquitt', 'tasic']:
-        print(f"Processing {dataset}")
+        print(f"Loading {dataset}")
         adata = ad.read_h5ad(f"./data/{dataset}_raw.h5ad")
         # Normalize
         sc.pp.normalize_per_cell(adata, 1e4)
@@ -24,7 +24,7 @@ def main():
             for group in groups for key in ['names', 'logfoldchanges']})
         logfc = float(df[df['Sst_n'] == 'Elfn1']['Sst_l'])
         rank  = np.where(df['Sst_n'] == 'Elfn1')[0][0] + 1
-        print(f"{dataset}: Elfn1 is {rank} with {logfc:0.2f} logfc")
+        print(f"{dataset}: Elfn1 is {rank}th with {logfc:0.2f} logfc")
 
     return 0
 
