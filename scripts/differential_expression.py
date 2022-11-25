@@ -7,7 +7,11 @@ import scanpy as sc
 
 
 def main():
-    for dataset in ['bakken', 'tosches', 'colquitt', 'tasic']:
+    # Write results to file
+    fname = "./results/elfn1_de_analysis.txt"
+    f = open(fname, "w")
+    print(f"Writing results to {fname}")
+    for dataset in ['tosches', 'colquitt', 'tasic','bakken']:
         print(f"Loading {dataset}")
         adata = ad.read_h5ad(f"./data/{dataset}_raw.h5ad")
         # Normalize
@@ -16,7 +20,7 @@ def main():
         # Compare Sst with Pvalb
         print("Determining marker genes")
         sc.tl.rank_genes_groups(adata, "subclass", groups=['Sst', 'Pvalb'], 
-            method='t-test', n_genes=1000)
+            method='t-test', n_genes=200)
 
         result = adata.uns['rank_genes_groups']
         groups = result['names'].dtype.names
@@ -24,7 +28,11 @@ def main():
             for group in groups for key in ['names', 'logfoldchanges']})
         logfc = float(df[df['Sst_n'] == 'Elfn1']['Sst_l'])
         rank  = np.where(df['Sst_n'] == 'Elfn1')[0][0] + 1
-        print(f"{dataset}: Elfn1 is {rank}th with {logfc:0.2f} logfc")
+        summary = f"{dataset}: Elfn1 is {rank}th with {logfc:0.2f} logfc \n"
+        print(summary)
+        f.write(summary)
+
+    f.close()
 
     return 0
 
