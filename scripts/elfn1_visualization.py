@@ -27,8 +27,12 @@ def main():
         missing_categories = [subclass for subclass in keep_subclasses if subclass not in adata.obs['subclass'].cat.categories]
         adata.obs['subclass'] = adata.obs['subclass'].cat.add_categories(missing_categories)
         print(adata.obs['subclass'].cat.categories)
+        #if dataset in ['tosches', 'colquitt']:
         # Order by Elfn1 expression in mice
-        adata.obs['subclass'] = adata.obs['subclass'].cat.reorder_categories(['Sst', 'Vip', 'Sncg', 'Pvalb', 'Lamp5'])
+        adata = adata[adata.obs['subclass']!='Sncg']
+        adata.obs['subclass'] = adata.obs['subclass'].cat.reorder_categories(['Sst', 'Vip', 'Pvalb', 'Lamp5'])
+        #else:
+        #    adata.obs['subclass'] = adata.obs['subclass'].cat.reorder_categories(['Sst', 'Vip', 'Sncg', 'Pvalb', 'Lamp5'])
 
         # Normalize
         sc.pp.normalize_total(adata, 1e4)

@@ -1,0 +1,4 @@
+tosches: Elfn1 is 26th with 2.26 logfc 
+colquitt: Elfn1 is 4th with 2.80 logfc 
+tasic: Elfn1 is 49th with 2.24 logfc 
+bakken: Elfn1 is 167th with 2.12 logfc 
