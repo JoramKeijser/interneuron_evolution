@@ -1,4 +1,4 @@
-# Integrate datasets
+# Save raw bird data as Seurat
 # https://satijalab.org/seurat/articles/integration_introduction.html
 library(dplyr)
 library(Seurat)
