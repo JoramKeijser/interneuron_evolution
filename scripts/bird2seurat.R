@@ -1,5 +1,4 @@
 # Save raw bird data as Seurat
-# https://satijalab.org/seurat/articles/integration_introduction.html
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
@@ -21,6 +20,7 @@ write.table(counts, "./data/raw/bird/counts.csv", sep=",")
 # Metadata cells x vars. Counts: genes x cells
 counts <- t(counts) # cells x genes -> genes x cells
 colnames(counts) <- meta.data$cell
+
 rownames(meta.data) <- meta.data$cell
 meta.data <-meta.data %>% select(!cell)
 bird <- CreateSeuratObject(counts = counts, project = "bird", meta.data = meta.data)

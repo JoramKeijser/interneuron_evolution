@@ -19,11 +19,20 @@ gene.info <- read.table(paste0(datadir, filename.genes), header=TRUE, sep=',')
 # Meta / obs data
 meta.data <- read.table(paste0(datadir, filename.meta), header=TRUE, sep=',')
 rownames(meta.data) <- colnames(counts)
-rownames(counts) <- gene.info$gene_symbol
+# code as upper case
+rownames(counts) <- lapply(gene.info$gene_symbol, toupper)
 
 # Create Seurat
 # "Row names in the metadata need to match the column names of the counts matrix"
 mouse <- CreateSeuratObject(counts = counts, project = "mouse", meta.data = meta.data)
 mouse # 45768 features across 15413 samples within 1 assay 
 SaveH5Seurat(mouse, "./data/raw/mouse/mouse")
+# Transform
+mouse <- SCTransform(mouse, vars.to.regress = "percent_mt_exon_reads", 
+                     verbose=TRUE, variable.features.n = 3000)
+SaveH5Seurat(mouse, "./data/raw/mouse/mouseSCT", overwrite=TRUE)
+
+# Warning: Feature names cannot have underscores ('_'), replacing with dashes ('-')
+
+
 
