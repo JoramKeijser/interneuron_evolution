@@ -71,6 +71,5 @@ for (selected_class in c('GABAergic', 'Glutamatergic')){
   p2 <- DimPlot(object.combined, reduction = "umap", group.by="organism")
   p1 + p2
   # clear memory
-  rm(list=ls())
   gc()
 }
