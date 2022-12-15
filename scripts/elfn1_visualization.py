@@ -10,9 +10,12 @@ sc.settings.figdir = "./figures/"
 
 def main():
     seed = 1029
-    for dataset in ['tosches', 'colquitt', 'tasic', 'bakken']:
+    
+    # Upper lim. mapped to color. Higher expressions are clipped. 
+    max_expr = {'tosches': 2.2, 'colquitt': 4.2, "tasic": 1.5, "bakken": 1.25}
+    for dataset in ['tasic', 'bakken', 'tosches', 'colquitt']:
         print(f"Processing {dataset}")
-        adata = ad.read_h5ad(f"./data/{dataset}_raw.h5ad")
+        adata = ad.read_h5ad(f"./data/anndata/{dataset}_raw.h5ad")
         # Focus on 5 canonical mammalian classes. 
         keep_subclasses = ['Pvalb', 'Sst', 'Lamp5', 'Sncg', 'Vip']
         adata.obs['subclass'] = adata.obs['subclass'].astype("category")
@@ -54,7 +57,7 @@ def main():
         sc.pl.umap(adata, color='subclass', legend_loc='on data', show=False,
                 frameon=False, title='Subclass', save=f"_subclass_{dataset}.png")
         sc.pl.umap(adata, color='Elfn1', legend_loc='on data', show = False,
-                frameon=False, title='Elfn1', save=f"_elfn1_{dataset}.png")
+                frameon=False, title='Elfn1', save=f"_elfn1_{dataset}.png", vmax=max_expr[dataset])
 
 
 if __name__ == "__main__":
