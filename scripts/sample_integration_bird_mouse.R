@@ -34,9 +34,6 @@ for (selected_class in c('GABAergic', 'Glutamatergic')){
   bird@meta.data['class'] <- class
   # Select neurons
   bird <- bird[,bird@meta.data$class == selected_class]
-  # Only select largest dataset - zebra finch. 
-  # zebra finch has only 18 samples in area RA. 
-  bird <- bird[,bird@meta.data['organism'] == 'zf']
   
   # split across areas and species. Only need brain_region for glut 
   object.list <- SplitObject(bird, split.by = "brain_region")
@@ -46,7 +43,11 @@ for (selected_class in c('GABAergic', 'Glutamatergic')){
   rm(mouse)
   
   # Integrate: find anchors. Exclude first if using Glu
-  anchors <- FindIntegrationAnchors(object.list = object.list[[-1]])
+  if (selected_class == "Glutamatergic"){
+    # delete 18 samples from RA - too small for integration
+    object_list <- object_list[-1]
+  }
+  anchors <- FindIntegrationAnchors(object.list = object.list[-1])
   #rm(object.list)
   # Do the actual integration
   object.combined <- IntegrateData(anchorset = anchors)
