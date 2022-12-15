@@ -20,7 +20,9 @@ data.dir <- "./data/raw/turtle/"
 write.table(data.info, "./data/raw/turtle/metadata.csv", sep=",")
 write.table(counts, "./data/raw/turtle/counts.csv", sep=",")
 
-turtle <- CreateSeuratObject(counts = counts, project = "turtle", meta.data = data.info)
+turtle <- CreateSeuratObject(counts = counts, project = "turtle", 
+                             meta.data = data.info, 
+                             min.cells = 1, min.features = 1)
 turtle
 SaveH5Seurat(turtle, "./data/raw/turtle/turtle")
 
