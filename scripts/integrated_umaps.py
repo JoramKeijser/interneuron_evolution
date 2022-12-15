@@ -4,12 +4,10 @@ import seaborn as sns
 import anndata as ad
 import scanpy as sc
 from matplotlib.colors import ListedColormap
-sns.set_context("poster")
-sns.set_palette("Set2")
-sc.settings.figdir = "./figures/"
 
 def main():
-    
+    sns.set_context("poster")
+    sns.set_palette("Set2")
     data_dir = "./data/raw/"
     fig_dir = "./figures/"
 
