@@ -8,7 +8,7 @@ gc()
 
 # Where to load from and save to
 datadir <- "~/Dropbox/scRNAseq_data/Tosches18/"
-getwd()
+
 for (species in c("turtle", "lizard")){
   print(paste("Processing", species))
   savedir <- paste0("./data/Tosches18_", species, "/")
@@ -43,6 +43,10 @@ for (species in c("turtle", "lizard")){
                                meta.data = data.info, 
                                min.cells = 1, min.features = 1)
   SaveH5Seurat(seurat_object, paste0(savedir, species))
+  # Also save in H5ad format for scanpy
+  Convert(paste0(savedir, paste0("mouse", ".h5seurat")), 
+          dest = "h5ad", overwrite=TRUE)
 }
+
 
 
