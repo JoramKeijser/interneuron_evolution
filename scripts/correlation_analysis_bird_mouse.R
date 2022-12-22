@@ -3,10 +3,11 @@ library(dplyr)
 library(Seurat)
 library(SeuratDisk)
 library(gplots)
+library(stringr)
 
 source("./src/seurat_utils.R")
 
-cell_type <- "Gaba" # "Gaba" or "Glut
+cell_type <- "Glut" # "Gaba" or "Glut
 
 # Load bird data
 bird <- LoadH5Seurat("./data/Colquitt21/bird.h5seurat") 
@@ -22,17 +23,20 @@ mouse # 42094 features across 15413 samples within 1 assay
 if (cell_type == "Gaba"){
   bird <- bird[, bird@meta.data$cluster_int_sub2 %>% startsWith("GABA")]  # 4956 samples
   mouse <- mouse[, mouse@meta.data$class == "GABAergic"] # 6125 samples
+  # Merge bird clusters
+  bird@meta.data <- bird@meta.data %>% mutate(subclass = recode(cluster_int_sub2, 
+                                                                "GABA-1-1" = "1", "GABA-1-2" = "1",
+                                                                "GABA-2" = "2", "GABA-3" = "3", "GABA-4" = "4", 
+                                                                "GABA-5-1" = "5", "GABA-5-2" = "5", "GABA-5-3" = "5",
+                                                                "GABA-6" = "6", "GABA-7" = "7", "GABA-8"="8",
+                                                                "GABA-Pre" = "Pre", ))
+  
 } else if (cell_type == "Glut"){
-  turtle <- turtle[, turtle@meta.data$clusters %>% startsWith("e")]  # 640 samples
+  bird <- bird[,sapply(bird@meta.data$cluster_int_sub2, function(x){grepl("Glut", x)})]  # 640 samples
+  bird@meta.data  <- bird@meta.data %>% mutate(subclass = cluster_int_sub2)
   mouse <- mouse[, mouse@meta.data$class == "Glutamatergic"] # 7366 samples
 }
 # Merge bird clusters
-bird@meta.data <- bird@meta.data %>% mutate(subclass = recode(cluster_int_sub2, 
-                          "GABA-1-1" = "1", "GABA-1-2" = "1",
-                          "GABA-2" = "2", "GABA-3" = "3", "GABA-4" = "4", 
-                          "GABA-5-1" = "5", "GABA-5-2" = "5", "GABA-5-3" = "5",
-                          "GABA-6" = "6", "GABA-7" = "7", "GABA-8"="8",
-                          "GABA-Pre" = "Pre", ))
 
 #mouse <- clustering_pipeline(mouse, clustering_resolution = 0.4) 
 #bird <- clustering_pipeline(bird, clustering_resolution=0.4) 
@@ -65,9 +69,12 @@ if (cell_type == "Gaba"){
   C <- as.data.frame(C)
   Csub <- C[!(rownames(C) %in% c("7", "8", "Pre")), !(colnames(C) %in% c("Serpinf1", "Sncg"))]
 } else if (cell_type == "Glut"){
-  # to do: subset 
+  # to do: subset  !(rownames(C) %in% c("RA-1", "RA-2", "RA-3"))
+  Csub <- C[, !(colnames(C) %in% c("NP", "CR"))]
 }
 
+rownames(C) <- sapply(rownames(C), function(x){str_replace(x, "_Glut", "")})
+       
 # Fixed color range
 colors <- seq(-.25,.35,length=100)
 colormap <- hcl.colors(99, "RdYlBu",rev=TRUE)
