@@ -3,6 +3,19 @@ library(dplyr)
 library(Seurat)
 library(SeuratDisk)
 
+# Integrated analysis: standard workflow 
+integrated.analysis <- function(combined.seurat, do_scale = FALSE){
+  if (do_scale){
+    combined.seurat <- ScaleData(combined.seurat, verbose = TRUE)
+  }
+  combined.seurat <- RunPCA(combined.seurat, npcs = 30, verbose = TRUE)
+  combined.seurat <- RunUMAP(combined.seurat, reduction = "pca", dims = 1:30)
+  combined.seurat <- FindNeighbors(combined.seurat, reduction = "pca", dims = 1:30)
+  combined.seurat <- FindClusters(combined.seurat, resolution = 0.5)
+  return(combined.seurat)
+}
+
+
 # Standard workflow for clustering
 clustering_pipeline <- function(seurat_obj, 
                                 clustering_resolution = 0.8, umap_dims = 1:15){
