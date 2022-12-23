@@ -2,7 +2,7 @@
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
-source(seurat_utils) # integrated.analysis pipeline
+source("./src/seurat_utils.R") # integrated.analysis pipeline
 # To do: use SCTransform or not?
 use_SCT <- FALSE
 datadir <- "./data/"
@@ -59,18 +59,19 @@ for (selected_class in c('GABAergic', 'Glutamatergic')){
 
   # Visualization
   DimPlot(combined, reduction = "umap", group.by = "organism")
+  # Together with cell types from mouse
+  p1 <- DimPlot(combined, reduction = "umap", group.by = "subclass")
+  p2 <- DimPlot(combined, reduction = "umap", group.by="organism")
+  p1 + p2
   
   fname <- paste0("mouse_bird_", selected_class, "_integrated")
   savename <- paste0("./data/raw/", fname)
-  SaveH5Seurat(object.combined, savename, overwrite=TRUE)
+  SaveH5Seurat(combined, savename, overwrite=TRUE)
   setwd("./data/raw/")
   # Also save as H5ad for viz in scanpy
   Convert(paste0(fname, ".h5seurat"), dest = "h5ad")
   
-  # Plot
-  p1 <- DimPlot(object.combined, reduction = "umap", group.by = "subclass")
-  p2 <- DimPlot(object.combined, reduction = "umap", group.by="organism")
-  p1 + p2
+ 
   # clear memory
   gc()
 }
