@@ -6,7 +6,7 @@ source("./src/seurat_utils.R") # integrated.analysis pipeline
 # To do: use SCTransform or not?
 use_SCT <- FALSE
 datadir <- "./data/"
-classes <- c("GABAergic")#, "Glutamatergic")
+classes <- c("GABAergic", "Glutamatergic")
 selected_class <- classes[1]
 for (selected_class in classes){
   
@@ -88,5 +88,4 @@ for (selected_class in classes){
   # Also save as H5ad for viz in scanpy
   Convert(paste0(savename, ".h5seurat"), dest = "h5ad", overwrite=TRUE)
   
-
 }
