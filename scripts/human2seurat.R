@@ -2,33 +2,24 @@
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
-library(fs) # file system interactions
 
-rm(list = ls())
-gc()
-# Where to read from and save to 
-#datadir <- "~/Dropbox/scRNAseq_data/Bakken21/"
-#savedir <- "./data/Bakken21/"
-#counts.filename <- "matrix.csv"
-#filename.meta <- "metadata.csv"
-
-# Load the data
-#counts <- read.table(paste0(datadir, counts.filename), header = TRUE, sep=",") 
-#meta.data <- read.csv(paste0(datadir, filename.meta), header=TRUE, skip=0)
-#colnames(meta.data)
-#tell r to load as integer
-datadir <- "~/Dropbox/tPC_data/"
 savedir <- "./data/Bakken21/"
+datadir <- "~/Dropbox/transcriptomic-axis/data/csvs_from_ad/Bakken21/"
+metadata <- read.csv(paste0(datadir, "obs.csv"), header = TRUE, sep=',')
+genenames <- read.csv(paste0(datadir, "var.csv"), header=FALSE, sep=',', skip = 1)
+counts <- read.csv(paste0(datadir, "X.csv"), header=FALSE, sep=',')
 
-setwd(datadir)
-Convert(paste0(datadir, "bakken_raw.h5ad"), dest = "h5seurat", overwrite = TRUE)
-# wtf: Warning: Unknown file type: h5ad
-# Check
-human <- LoadH5Seurat(paste0(datadir, "bakken_raw.h5seurat"))
+# Annotate for Seurat object
+counts <- t(counts)
+rownames(counts) <- genenames$V1
+colnames(counts) <- metadata$sample_name
+rownames(metadata) <- metadata$sample_name
 
-file_move(paste0(datadir, "bakken_raw.h5ad"), 
-          paste0(savedir, "bakken.h5ad"))
-setwd(datadir)
-Convert("bakken_raw.h5ad", dest = "h5seurat", overwrite = TRUE)
-setwd("~/Dropbox/elfn1_evolution/")
-human <- LoadH5Seurat(paste0(savedir, "bakken.h5seurat"))
+# Make it a Seurat object
+human <- CreateSeuratObject(counts = counts, project = "human", 
+                           meta.data = metadata, 
+                           min.cells = 1, min.features = 1)
+SaveH5Seurat(human, paste0(savedir, "human"), overwrite=TRUE)
+# Also save in scanpy/H5ad format
+Convert(paste0(savedir, paste0("human", ".h5seurat")), 
+        dest = "h5ad", overwrite=TRUE)
