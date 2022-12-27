@@ -4,7 +4,7 @@ library(Seurat)
 library(SeuratDisk)
 source("./src/seurat_utils.R") # integrated.analysis pipeline
 # To do: use SCTransform or not?
-use_SCT <- FALSE
+use_SCT <- TRUE
 datadir <- "./data/"
 
 #setwd("/mnt/data/joram/elfn1_evolution")
@@ -31,7 +31,8 @@ if (use_SCT){
                                     normalization.method = 'SCT', 
                                     anchor.features = features)
   combined <- IntegrateData(anchors, normalization.method = 'SCT')
-  combined <- Integrated.analysis(combined, FALSE)  
+  combined <- integrated.analysis(combined, FALSE)  
+  fname <- paste0("mouse_human_GABAergic", "_integrated_SCT")
 } else{
   object.list <- lapply(object.list, function(x){ 
                             x %>% NormalizeData() %>% FindVariableFeatures()})
@@ -39,6 +40,7 @@ if (use_SCT){
   combined <- IntegrateData(anchorset = anchors)
   # Usual integrated analysis
   combined <- integrated.analysis(combined, do_scale = TRUE)
+  fname <- paste0("mouse_human_GABAergic", "_integrated_")
 }
 
   
@@ -49,7 +51,7 @@ p1 <- DimPlot(combined, reduction = "umap", group.by = "subclass")
 p2 <- DimPlot(combined, reduction = "umap", group.by="organism")
 p1 + p2
 
-fname <- paste0("mouse_human_GABAergic", "_integrated")
+fname <- paste0("mouse_human_GABAergic", "_integrated_SCT")
 getwd()
 savename <- paste0("./data/integrated_datasets/", fname)
 SaveH5Seurat(combined, savename, overwrite=TRUE)
