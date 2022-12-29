@@ -87,13 +87,16 @@ for (gene in receptor_genes){
 # Need to be more specific, and do it for each cell type? 
 # Or zero-inflated model?
 # Shouldn't smear out counts over all neurons
-
 round(colMeans(true_counts>0) * 100)
 #  CHRM3  CHRM4 CHRNA4 CHRNA5 
 #   70     25     61      9 
+hist(true_counts$CHRM3)
+hist(true_counts[true_counts$CHRM3>0,]$CHRM3)
 
 true_counts_human <- GetAssayData(object = human, slot = "counts")[receptor_genes, ]
 round(rowMeans(true_counts_human>0) * 100)
+hist(true_counts_human['CHRM3',])
+
 # CHRM3  CHRM4 CHRNA4 CHRNA5 
 # 72      0     13      2 
 # CHRM4 really does seem absent in humans
@@ -101,6 +104,13 @@ round(rowMeans(true_counts_human>0) * 100)
 true_counts_turtle <- GetAssayData(object = turtle, slot = "counts")[receptor_genes, ]
 round(rowMeans(true_counts_turtle>0) * 100)
 # CHRM4 is actually more abundant 
+hist(true_counts_turtle['CHRM3',])
+
+
+true_counts_bird <- GetAssayData(object = bird, slot = "counts")[receptor_genes, ]
+round(rowMeans(true_counts_bird>0) * 100)
+# CHRM4 is actually more abundant 
+hist(true_counts_bird['CHRM3',])
 
 # (1) Extend model to cell type?
 # (2) Hypothesis testing. Is Chrm4 count really more than expected from mouse?
