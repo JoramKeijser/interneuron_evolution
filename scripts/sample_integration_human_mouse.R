@@ -51,8 +51,7 @@ p1 <- DimPlot(combined, reduction = "umap", group.by = "subclass")
 p2 <- DimPlot(combined, reduction = "umap", group.by="organism")
 p1 + p2
 
-fname <- paste0("mouse_human_GABAergic", "_integrated_SCT")
-getwd()
+
 savename <- paste0("./data/integrated_datasets/", fname)
 SaveH5Seurat(combined, savename, overwrite=TRUE)
 # Also save as H5ad for viz in scanpy

@@ -2,6 +2,7 @@
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
+SAVE = FALSE
 
 savedir <- "./data/Bakken21/"
 datadir <- "~/Dropbox/transcriptomic-axis/data/csvs_from_ad/Bakken21/"
@@ -19,7 +20,13 @@ rownames(metadata) <- metadata$sample_name
 human <- CreateSeuratObject(counts = counts, project = "human", 
                            meta.data = metadata, 
                            min.cells = 1, min.features = 1)
-SaveH5Seurat(human, paste0(savedir, "human"), overwrite=TRUE)
-# Also save in scanpy/H5ad format
-Convert(paste0(savedir, paste0("human", ".h5seurat")), 
-        dest = "h5ad", overwrite=TRUE)
+mito.count <- colSums(human[sapply(rownames(human), function(x) {startsWith(x, "MT") }), ])
+total.count <- colSums(human) # == nCount_RNA
+human[['percent.mito']] <- mito.count / total.count * 100
+human[['organism']] <- 'homo sapiens'
+if (SAVE){
+  SaveH5Seurat(human, paste0(savedir, "human"), overwrite=TRUE)
+  # Also save in scanpy/H5ad format
+  Convert(paste0(savedir, paste0("human", ".h5seurat")), 
+          dest = "h5ad", overwrite=TRUE)
+}
