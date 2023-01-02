@@ -66,7 +66,7 @@ for (cell_type in c("Glut", "GABA")){
   # Mouse - delete Serpinf1, Sncg
   if (cell_type == "Gaba"){
     # Remove small subclasses or those that correspond to subcortical INs
-    C <- C[!(rownames(C) %in% c("7", "8", "Pre")), !(colnames(C) %in% c("Serpinf1", "Sncg", "Meis2"))]
+    C <- C[!(rownames(C) %in% c("7", "8", "Pre")), !(colnames(C) %in% c("Serpinf1", "Sncg"))]
     # Reorder
   } else if (cell_type == "Glut"){
     C <- C[, !(colnames(C) %in% c("NP", "CR"))]
