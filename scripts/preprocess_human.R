@@ -5,18 +5,17 @@ library(SeuratDisk)
 rm(list=ls())
 
 # Where to load from and save to
-projectdir <- "/home/joram/Dropbox/elfn1_evolution"
+projectdir <- "/cognition/home/jkeijser/elfn1_evolution"
 if (getwd() != projectdir){
   setwd(projectdir)  
 }
 source("./src/preprocessing_utils.R") # function recode_genes
+
 datadir <- "./data/raw/bakken/"
 savedir <- datadir
-nrows = 100
+nrows = -1 
 metadata <- read.csv(paste0(datadir, "metadata.csv"), header = TRUE, sep=',', 
                      nrows = nrows)
-genenames <- read.csv(paste0(datadir, "var.csv"), header=FALSE, sep=',', 
-                      skip = 1, nrows = nrows)
 counts <- read.csv(paste0(datadir, "matrix.csv"), header=TRUE, sep=',', nrows=nrows)
 # sample name as rowname
 rownames(counts) <- counts$sample_name
