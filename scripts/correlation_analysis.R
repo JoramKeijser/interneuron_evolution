@@ -53,7 +53,7 @@ for (cell_type in c("Glut", "GABA")){
   
   # Select shared marker genes
   shared.markers <- intersect(top.mouse.markers, top.bird.markers)
-  print(paste("# shared marker genes:", length(shared.markers))) # 475-500
+  print(paste(length(shared.markers), "shared marker genes")) # 475-500
   
   # Average across clusters; log1p; across-cluster mean
   bird.avg <- score_genes(bird, top_markers = shared.markers)
@@ -69,7 +69,6 @@ for (cell_type in c("Glut", "GABA")){
     C <- C[!(rownames(C) %in% c("7", "8", "Pre")), !(colnames(C) %in% c("Serpinf1", "Sncg", "Meis2"))]
     # Reorder
   } else if (cell_type == "Glut"){
-    # to do: subset  !(rownames(C) %in% c("RA-1", "RA-2", "RA-3"))
     C <- C[, !(colnames(C) %in% c("NP", "CR"))]
     rownames(C) <- sapply(rownames(C), function(x){str_replace(x, "_Glut", "")})
   }
@@ -89,7 +88,7 @@ for (cell_type in c("Glut", "GABA")){
   write.table(C, paste0("./data/correlation_", cell_type, ".csv"))
   write.table(bird.avg, paste0("./data/marker_expr_bird_", cell_type, ".csv"))
   write.table(mouse.avg, paste0("./data/marker_expr_mouse_ ", cell_type, ".csv"))
-  # 7. Redo after shuffling to get significance. 
+  # Todo: shuffling to get significance. 
 }
 
 
