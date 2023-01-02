@@ -5,14 +5,11 @@ library(SeuratDisk)
 rm(list=ls())
 
 # Where to load from and save to
-projectdir <- "/cognition/home/jkeijser/elfn1_evolution"
-if (getwd() != projectdir){
-  setwd(projectdir)  
-}
-source("./src/preprocessing_utils.R") # function recode_genes
-
+projectdir <- "/home/joram/Dropbox/elfn1_evolution"
+setwd(projectdir)  
+source("./src/preprocessing_utils.R") # function recode_genes & save dirs
 datadir <- "./data/raw/bakken/"
-savedir <- datadir
+
 nrows = -1 
 metadata <- read.csv(paste0(datadir, "metadata.csv"), header = TRUE, sep=',', 
                      nrows = nrows)
@@ -33,7 +30,9 @@ human <- CreateSeuratObject(counts = counts, project = "human",
                            meta.data = metadata, 
                            min.cells = 1, min.features = 1)
 
-SaveH5Seurat(human, paste0(savedir, "human"), overwrite=TRUE)
+# Save it, also has h5ad for python use
+SaveH5Seurat(mouse, paste0(savedir_seurat, "human"), overwrite=TRUE)
 # Also save in scanpy/H5ad format
-Convert(paste0(savedir, paste0("human", ".h5seurat")), 
-          dest = "h5ad", overwrite=TRUE)
+Convert(paste0(savedir_seurat, "human.h5seurat"), 
+        dest = paste0(savedir_anndata, "human.h5ad"), overwrite=TRUE)
+

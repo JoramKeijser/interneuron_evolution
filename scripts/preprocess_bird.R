@@ -6,12 +6,9 @@ rm(list=ls())
 
 # Where to load from and save to
 projectdir <- "/home/joram/Dropbox/elfn1_evolution"
-if (getwd() != projectdir){
-  setwd(projectdir)  
-}
-source("./src/preprocessing_utils.R") # function recode_genes
+setwd(projectdir)  
+source("./src/preprocessing_utils.R") # function recode_genes & save dirs
 datadir <- "./data/raw/colquitt/"
-savedir <- datadir
 
 # Load the data: single csv with meta data and counts
 counts_and_metadata <- read.table(paste0(datadir, "HVC_RA_RNA_counts.csv"), header=TRUE, sep=",")
@@ -33,7 +30,9 @@ bird <- CreateSeuratObject(counts = counts, project = "bird",
                            min.cells = 1, min.features = 1)
 bird # 18342 features across 29497 samples within 1 assay 
 
-SaveH5Seurat(bird, paste0(savedir, "bird"), overwrite=TRUE)
+SaveH5Seurat(bird, paste0(savedir_seurat, "bird"), overwrite=TRUE)
 # Also save in scanpy/H5ad format
-Convert(paste0(savedir, paste0("bird", ".h5seurat")), 
-        dest = "h5ad", overwrite=TRUE)
+Convert(paste0(savedir_seurat, "bird.h5seurat"), 
+        dest = paste0(savedir_anndata, "bird.h5ad"), overwrite=TRUE)
+
+

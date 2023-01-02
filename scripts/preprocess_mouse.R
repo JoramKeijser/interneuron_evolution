@@ -6,11 +6,10 @@ rm(list=ls())
 
 # Where to load from and save to
 projectdir <- "/home/joram/Dropbox/elfn1_evolution"
-if (getwd() != projectdir){
-  setwd(projectdir)  
-}
+setwd(projectdir)  
+source("./src/preprocessing_utils.R") # function recode_genes & save dirs
 datadir <- "./data/raw/tasic/"
-savedir <- datadir
+
 # The files to load
 filename <- "mouse_VISp_2018-06-14_exon-matrix.csv"
 filename.meta <- "mouse_VISp_2018-06-14_samples-columns.csv"
@@ -35,10 +34,10 @@ mouse <- CreateSeuratObject(counts = counts, project = "mouse",
 mouse # 42094 features across 15413 samples within 1 assay 
 
 # Save it, also has h5ad for python use
-SaveH5Seurat(mouse, paste0(savedir, "mouse"), overwrite=TRUE)
-# Also save in H5ad format for scanpy
-Convert(paste0(savedir, paste0("mouse", ".h5seurat")), 
-        dest = "h5ad", overwrite=TRUE)
+SaveH5Seurat(mouse, paste0(savedir_seurat, "mouse"), overwrite=TRUE)
+# Also save in scanpy/H5ad format
+Convert(paste0(savedir_seurat, "mouse.h5seurat"), 
+        dest = paste0(savedir_anndata, "mouse.h5ad"), overwrite=TRUE)
 
 
 

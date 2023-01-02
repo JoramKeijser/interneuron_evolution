@@ -1,5 +1,9 @@
 # Utilities/helper functions for preprocessing
 
+# Directories to save data to 
+savedir_seurat <- "./data/seurat/"
+savedir_anndata <- "./data/anndata/"
+
 # Gene names in "Elfn1" format (mouse convention)
 recode_genes <- function(gene_names){
   sapply(gene_names, function(name){

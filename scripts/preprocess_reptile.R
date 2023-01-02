@@ -7,12 +7,9 @@ gc()
 
 # Where to load from and save to
 projectdir <- "/home/joram/Dropbox/elfn1_evolution"
-if (getwd() != projectdir){
-  setwd(projectdir)  
-}
-source("./src/preprocessing_utils.R") # function recode_genes
+setwd(projectdir)  
+source("./src/preprocessing_utils.R") # function recode_genes & save dirs
 datadir <- "./data/raw/tosches/"
-savedir <- datadir
 species_list <- c("turtle", "lizard")
 
 for (species in species_list){
@@ -39,12 +36,12 @@ for (species in species_list){
   neurons <- CreateSeuratObject(counts = counts, project = species,
                                meta.data = meta.data, min.features = 1)
   print(neurons) # 23500 features across 8575 samples within 1 assay
-  print(paste0("Save Seurat object to ", savedir, species))
-  SaveH5Seurat(neurons, paste0(savedir, species), overwrite=TRUE)
+  SaveH5Seurat(neurons, paste0(savedir_seurat, species), overwrite=TRUE)
   
   # Also save in H5ad/anndata format
-  Convert(paste0(savedir, species, ".h5seurat"), 
-          dest = "h5ad", overwrite=TRUE)
+  Convert(paste0(savedir_seurat, species, ".h5seurat"), 
+          dest = paste0(savedir_anndata, species, ".h5ad"), overwrite=TRUE)
+  
 }
 
 
