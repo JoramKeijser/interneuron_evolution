@@ -1,13 +1,16 @@
-# Save raw mouse data as Seurat
+# Save raw bird data as Seurat
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
+rm(list=ls())
 
-rm(list = ls())
-gc()
-# Where to read from and save to 
-datadir <- "~/Dropbox/scRNAseq_data/Tasic18/mouse_VISp_gene_expression_matrices_2018-06-14/"
-savedir <- "./data/Tasic18/"
+# Where to load from and save to
+projectdir <- "/home/joram/Dropbox/elfn1_evolution"
+if (getwd() != projectdir){
+  setwd(projectdir)  
+}
+datadir <- "./data/raw/tasic/"
+savedir <- datadir
 # The files to load
 filename <- "mouse_VISp_2018-06-14_exon-matrix.csv"
 filename.meta <- "mouse_VISp_2018-06-14_samples-columns.csv"
@@ -20,11 +23,8 @@ meta.data <- read.table(paste0(datadir, filename.meta), header=TRUE, sep=',')
 # samples as row names. gene x sample
 rownames(counts) <- counts$X
 counts <- counts %>% select(!X) #genes x samples = 45768 x 15413
-# Gene names
-# Meta / obs data
-rownames(meta.data) <- colnames(counts)
-# code as upper case for consistency with mouse dataset
-rownames(counts) <- lapply(gene.info$gene_symbol, toupper)
+rownames(meta.data) <- colnames(counts) # Meta / obs data
+rownames(counts) <- gene.info$gene_symbol # Gene names
 
 
 # Create Seurat
@@ -33,6 +33,8 @@ mouse <- CreateSeuratObject(counts = counts, project = "mouse",
                             meta.data = meta.data, 
                             min.cells = 1, min.features = 1)
 mouse # 42094 features across 15413 samples within 1 assay 
+
+# Save it, also has h5ad for python use
 SaveH5Seurat(mouse, paste0(savedir, "mouse"), overwrite=TRUE)
 # Also save in H5ad format for scanpy
 Convert(paste0(savedir, paste0("mouse", ".h5seurat")), 
