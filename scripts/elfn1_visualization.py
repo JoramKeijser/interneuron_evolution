@@ -54,7 +54,7 @@ def main():
         # Visualize UMAP
         sc.pl.umap(adata, color='subclass', legend_loc='on data', show=False,
                 frameon=False, title='Subclass', save=f"_subclass_{dataset}.png")
-        for gene in ['Elfn1', 'Cbln4', 'Reln', 'Calb2', 'Myh8']:
+        for gene in ['Elfn1', 'Cbln4', 'Calb2']:
             sc.pl.umap(adata, color=gene, legend_loc='on data', show = False,
                 frameon=False, title=gene, save=f"_{gene}_{dataset}.png", vmax=max_expr[dataset])
 
