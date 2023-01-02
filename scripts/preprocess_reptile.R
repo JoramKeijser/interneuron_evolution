@@ -10,6 +10,7 @@ projectdir <- "/home/joram/Dropbox/elfn1_evolution"
 if (getwd() != projectdir){
   setwd(projectdir)  
 }
+source("./src/preprocessing_utils.R") # function recode_genes
 datadir <- "./data/raw/tosches/"
 savedir <- datadir
 species_list <- c("turtle", "lizard")
@@ -32,9 +33,7 @@ for (species in species_list){
   meta.data <- attr(neurons, "data.info") # cells x features 
   
   # Gene names in "Elfn1" format (mouse convention)
-  rownames(counts) <- sapply(rownames(counts), function(name){
-    paste0(substr(name, 1, 1), tolower(substr(name, 2, nchar(name))))
-  })
+  rownames(counts) <- recode_genes(rownames(counts))
 
   # Create and save Seurat object
   neurons <- CreateSeuratObject(counts = counts, project = species,

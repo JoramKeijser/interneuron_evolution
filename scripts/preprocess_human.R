@@ -9,7 +9,7 @@ projectdir <- "/home/joram/Dropbox/elfn1_evolution"
 if (getwd() != projectdir){
   setwd(projectdir)  
 }
-source("./scripts/preprocessing_utils.R") # function recode_genes
+source("./src/preprocessing_utils.R") # function recode_genes
 datadir <- "./data/raw/bakken/"
 savedir <- datadir
 nrows = 100
