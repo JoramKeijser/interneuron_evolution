@@ -39,10 +39,6 @@ for (cell_type in c("Glut", "GABA")){
     bird@meta.data  <- bird@meta.data %>% mutate(subclass = cluster_int_sub2)
     mouse <- mouse[, mouse@meta.data$class == "Glutamatergic"] # 7366 samples
   }
-  # Merge bird clusters
-  
-  #mouse <- clustering_pipeline(mouse, clustering_resolution = 0.4) 
-  #bird <- clustering_pipeline(bird, clustering_resolution=0.4) 
   # Which groups/clusters to compare?
   Idents(bird) <- bird@meta.data$subclass
   Idents(mouse) <- mouse@meta.data$subclass
