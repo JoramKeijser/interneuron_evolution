@@ -5,7 +5,21 @@ Analysing the evolution of cortical interneurons using single cell RNA sequencin
 
 ## Installation
 
-Make a copy of this repo (e.g. with git clone), cd into the root folder of the repo, and download the raw data. Then install the Python packages:
+Make a copy of this repo (e.g. with git clone), cd into the root folder of the repo, and download the raw data.
+```
+git clone https://github.com/JoramKeijser/elfn1_evolution/
+cd elfn1_evolution
+mkdir Data 
+wget https://zenodo.org/...
+```
+Recreate the conda environment:
+```
+conda env create -n cb --file environment.yml
+```
+Install the project:
+```
+pip install -e .
+```
 
 ## Organization
 The code is organized into the following folders:
