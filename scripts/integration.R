@@ -1,41 +1,40 @@
-# # https://satijalab.org/seurat/articles/integration_introduction.html
+# Integrate bird and mouse samples
+
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
-source("./src/seurat_utils.R") # integrated.analysis pipeline
 # To do: use SCTransform or not?
-use_SCT <- FALSE
-datadir <- "./data/"
-
-
-for (selected_class in c('GABAergic', 'Glutamatergic')){
-  setwd("/mnt/data/joram/elfn1_evolution")
-  
+use_SCT <- TRUE
+projectdir <- "/home/joram/Dropbox/elfn1_evolution"
+setwd(projectdir)  
+source("./src/seurat_utils.R") # integrated.analysis pipeline
+datadir <- "./data/seurat/"
+savedir_seurat <- "./data/seurat/"
+savedir_anndata <- "./data/anndata/"
+# , 'GABAergic'
+selected_class <- "Glutamatergic"
+for (selected_class in c( 'Glutamatergic')){
   print(paste("Processing", selected_class))
   # Load data
-  mouse <- LoadH5Seurat(paste0(datadir, "Tasic18/", "mouse.h5seurat"))
+  mouse <- LoadH5Seurat(paste0(datadir, "mouse.h5seurat"))
   mouse <- mouse[,mouse@meta.data$class == selected_class]
   # Same naming convention
   mouse@meta.data <- mouse@meta.data %>% mutate(percent.mito = percent_mt_exon_reads)
   # Next, bird
-  bird <- LoadH5Seurat(paste0(datadir,"Colquitt21/",  "bird.h5seurat"))
+  bird <- LoadH5Seurat(paste0(datadir,"bird.h5seurat"))
+  bird <- bird[, bird@meta.data$species == 'zf'] # 25392 samples within 1 assay 
   bird@meta.data <- bird@meta.data %>% 
     rename(brain_region = position2, organism = species, cluster = cluster_int_sub2)
-  # Add class (GABAergic, Glutamatergic etc)
-  class <- bird@meta.data$cluster
-  class[startsWith(class, "GABA")] <- "GABAergic"
-  class[startsWith(class, "RA_Glut")] <- "Glutamatergic"
-  class[startsWith(class, "HVC_Glut")] <- "Glutamatergic"
-  bird@meta.data['class'] <- class
-  # Select neurons
-  bird <- bird[,bird@meta.data$class == selected_class]
+  # Select neuron class
+  if (selected_class == "GABAergic"){
+    bird <- bird[,sapply(bird@meta.data$cluster, function(x) {grepl("GABA", x)})]
+  } else if (selected_class == "Glutamatergic"){
+    bird <- bird[,sapply(bird@meta.data$cluster, function(x) {grepl("Glut", x)})]
+  }
   
   # split across areas and species. Only need brain_region for glut 
   object.list <- SplitObject(bird, split.by = "brain_region")
-  if (selected_class == "Glutamatergic"){
-    # delete 18 samples from RA - too small for integration
-    object_list <- object_list[-1]
-  }
+  # Only 1 mouse region
   object.list['mouse'] <- mouse
   if (use_SCT){
     # SCT workflow
@@ -47,7 +46,8 @@ for (selected_class in c('GABAergic', 'Glutamatergic')){
                                       normalization.method = 'SCT', 
                                       anchor.features = features)
     combined <- IntegrateData(anchors, normalization.method = 'SCT')
-    combined <- Integrated.analysis(combined, FALSE)  
+    combined <- integrated.analysis(combined, FALSE)  
+    fname <- paste0("mouse_bird_", selected_class, "_integrated_SCT")
   } else{
     object.list <- lapply(object.list, function(x){ 
                               x %>% NormalizeData() %>% FindVariableFeatures()})
@@ -55,23 +55,19 @@ for (selected_class in c('GABAergic', 'Glutamatergic')){
     combined <- IntegrateData(anchorset = anchors)
     # Usual integrated analysis
     combined <- integrated.analysis(combined, scale = TRUE)
+    fname <- paste0("mouse_bird_", selected_class, "_integrated")
   }
 
   # Visualization
-  DimPlot(combined, reduction = "umap", group.by = "organism")
-  # Together with cell types from mouse
   p1 <- DimPlot(combined, reduction = "umap", group.by = "subclass")
   p2 <- DimPlot(combined, reduction = "umap", group.by="organism")
   p1 + p2
   
-  fname <- paste0("mouse_bird_", selected_class, "_integrated")
-  savename <- paste0("./data/raw/", fname)
+  # Save Seurat object
+  savename <- paste0(savedir_seurat, fname)
   SaveH5Seurat(combined, savename, overwrite=TRUE)
-  setwd("./data/raw/")
   # Also save as H5ad for viz in scanpy
-  Convert(paste0(fname, ".h5seurat"), dest = "h5ad")
-  
- 
-  # clear memory
-  gc()
+  Convert(paste0(savedir_seurat, paste0(fname, ".h5seurat")), 
+          dest = paste0(savedir_anndata, fname, ".h5ad"), overwrite=TRUE)
+  print("")
 }
