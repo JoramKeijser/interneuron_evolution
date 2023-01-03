@@ -3,8 +3,14 @@ Analysing the evolution of cortical interneurons using single cell RNA sequencin
 
 ## Installation
 
-First download the data. Then install the Python and R packages. 
+Make a copy of this repo (e.g. with git clone), cd into the root folder of the repo, and download the raw data. Then install the Python packages:
+
+## Organization
+The code is organized into the following folders:
 
 ## Analysis 
+
+The analysis pipeline is shown in the figure below. Each step corresponds to one or several scripts. 
+
 
 Preprocess the raw data by putting them into AnnData and Seurat files. Then run the other functions
