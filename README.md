@@ -9,7 +9,7 @@ Make a copy of this repo cd into the root folder of the repo, and download the r
 ```
 git clone https://github.com/JoramKeijser/elfn1_evolution/
 cd elfn1_evolution
-mkdir Data 
+mkdir data 
 wget https://zenodo.org/...
 ```
 Recreate the conda environment:
@@ -24,6 +24,12 @@ pip install -e .
 ## Organization
 The code is organized into the following folders:
 
+- `scripts` contains scripts that run the analyses
+- `src` contains the code that is shared by several sripts
+- `data` will contain the data after running the code under `Installation`
+- `figures` contains the figures
+- `results` contains text files 
+ 
 ## Analysis 
 
 The analysis pipeline is shown in the figure below. Each step corresponds to one or several scripts. 
