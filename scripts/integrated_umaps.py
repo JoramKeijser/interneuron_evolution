@@ -12,11 +12,11 @@ def main():
     data_dir = "./data/anndata/"
     fig_dir = "./figures/"
 
-    for celltype in ['GABAergic', 'Glutamatergic']:
+    for celltype in ['Glutamatergic', 'GABAergic']:
         adata = ad.read_h5ad(f"{data_dir}mouse_bird_{celltype}_integrated_SCT.h5ad")
         fig, ax = plt.subplots()
         sc.pl.umap(adata, color='organism', frameon=False, title=f'{celltype} neurons', 
-            ax=ax, legend_loc='None', show=False)
+            ax=ax, legend_loc='none', show=False)
         fig.savefig(f"{fig_dir}integrated_umap_{celltype}_SCT", dpi=300)
 
 
