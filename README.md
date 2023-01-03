@@ -34,6 +34,6 @@ The code is organized into the following folders:
 
 The analysis pipeline is shown in the figure below. Each step corresponds to one or several scripts. 
 
-![figures1](./figures/paper_figs/figures1.png))
+![figures1](./figures/paper_figs/figures1.png)
 
 Preprocess the raw data by putting them into AnnData and Seurat files. Then run the other functions
