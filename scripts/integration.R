@@ -1,19 +1,18 @@
 # Integrate bird and mouse samples
-
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
-# To do: use SCTransform or not?
-use_SCT <- TRUE
+
+use_SCT <- TRUE # To do: use SCTransform or not?
 projectdir <- "/home/joram/Dropbox/elfn1_evolution"
 setwd(projectdir)  
-source("./src/seurat_utils.R") # integrated.analysis pipeline
+source("./src/seurat_utils.R") # holds integrated.analysis pipeline
 datadir <- "./data/seurat/"
 savedir_seurat <- "./data/seurat/"
 savedir_anndata <- "./data/anndata/"
-# , 'GABAergic'
-selected_class <- "Glutamatergic"
-for (selected_class in c( 'Glutamatergic')){
+
+# Separately treat exc and inh neurons
+for (selected_class in c('GABAergic',  'Glutamatergic')){
   print(paste("Processing", selected_class))
   # Load data
   mouse <- LoadH5Seurat(paste0(datadir, "mouse.h5seurat"))
@@ -46,7 +45,7 @@ for (selected_class in c( 'Glutamatergic')){
                                       normalization.method = 'SCT', 
                                       anchor.features = features)
     combined <- IntegrateData(anchors, normalization.method = 'SCT')
-    combined <- integrated.analysis(combined, FALSE)  
+    combined <- integrated.analysis(combined, scale = FALSE)  
     fname <- paste0("mouse_bird_", selected_class, "_integrated_SCT")
   } else{
     object.list <- lapply(object.list, function(x){ 
