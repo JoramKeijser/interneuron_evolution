@@ -9,8 +9,9 @@ sns.set_palette("colorblind")
 sc.settings.figdir = "./figures/"
 
 def main():
-    seed = 1029
+    seed = 1029 # set randomness for dim. reduction and clustering
     data_dir = "../tPC_data/"
+    genes = ['Elfn1', 'Cbln4', 'Calb2'] # visualize these
     # Upper lim. mapped to color. Higher expressions are clipped. 
     max_expr = {'tosches': 2.2, 'colquitt': 4.2, "tasic": 1.75, "bakken": 1.25}
     for dataset in ['tasic', 'bakken', 'tosches', 'colquitt']:
@@ -31,14 +32,12 @@ def main():
         adata = adata[adata.obs['subclass']!='Sncg']
         # Order by Elfn1 expression in mice
         adata.obs['subclass'] = adata.obs['subclass'].cat.reorder_categories(['Sst', 'Vip', 'Pvalb', 'Lamp5'])
-        #else:
-        #    adata.obs['subclass'] = adata.obs['subclass'].cat.reorder_categories(['Sst', 'Vip', 'Sncg', 'Pvalb', 'Lamp5'])
 
         # Normalize to log CP10K
         sc.pp.normalize_total(adata, 1e4)
         sc.pp.log1p(adata)
         # Violin plots Elfn1 amd Cbln4
-        for gene in ['Elfn1', 'Cbln4']:
+        for gene in genes:
             fig, ax = plt.subplots(figsize=(9,4))
             sns.despine()
             sc.pl.violin(adata, gene, "subclass", ax=ax, ylabel = f"{gene} (log CP10K)", xlabel = "Subclass",
@@ -54,7 +53,7 @@ def main():
         # Visualize UMAP
         sc.pl.umap(adata, color='subclass', legend_loc='on data', show=False,
                 frameon=False, title='Subclass', save=f"_subclass_{dataset}.png")
-        for gene in ['Elfn1', 'Cbln4', 'Calb2']:
+        for gene in genes:
             sc.pl.umap(adata, color=gene, legend_loc='on data', show = False,
                 frameon=False, title=gene, save=f"_{gene}_{dataset}.png", vmax=max_expr[dataset])
 
