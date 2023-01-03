@@ -4,8 +4,8 @@ library(Seurat)
 library(SeuratDisk)
 
 # Integrated analysis: standard workflow 
-integrated.analysis <- function(combined.seurat, do_scale = FALSE){
-  if (do_scale){
+integrated.analysis <- function(combined.seurat, scale = FALSE){
+  if (scale){
     combined.seurat <- ScaleData(combined.seurat, verbose = TRUE)
   }
   combined.seurat <- RunPCA(combined.seurat, npcs = 30, verbose = TRUE)
