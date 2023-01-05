@@ -21,6 +21,7 @@ for (selected_class in c('GABAergic',  'Glutamatergic')){
   mouse@meta.data <- mouse@meta.data %>% mutate(percent.mito = percent_mt_exon_reads)
   # Next, bird
   bird <- LoadH5Seurat(paste0(datadir,"bird.h5seurat"))
+  # Only use largest dataset (zebra finch (zf), not Bengalese finch (bf))
   bird <- bird[, bird@meta.data$species == 'zf'] # 25392 samples within 1 assay 
   bird@meta.data <- bird@meta.data %>% 
     rename(brain_region = position2, organism = species, cluster = cluster_int_sub2)
@@ -32,9 +33,9 @@ for (selected_class in c('GABAergic',  'Glutamatergic')){
   }
   
   # split across areas and species. Only need brain_region for glut 
-  object.list <- SplitObject(bird, split.by = "brain_region")
+  object.list <- c("songbird" = bird, "mouse" = mouse) #SplitObject(bird, split.by = "organism")
   # Only 1 mouse region
-  object.list['mouse'] <- mouse
+  #object.list['mouse'] <- mouse
   if (use_SCT){
     # SCT workflow
     object.list <- lapply(object.list, 
