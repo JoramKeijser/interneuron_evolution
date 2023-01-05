@@ -4,12 +4,12 @@ library(Seurat)
 library(SeuratDisk)
 library(gplots)
 library(stringr)
+library(pheatmap)
 rm(list = ls())
 
 projectdir <- "/home/joram/Dropbox/elfn1_evolution"
 setwd(projectdir)  
 source("./src/seurat_utils.R")
-
 
 for (cell_type in c("Glut", "GABA")){
   # Load bird data
@@ -49,42 +49,39 @@ for (cell_type in c("Glut", "GABA")){
   
   # Select shared marker genes
   shared.markers <- intersect(top.mouse.markers, top.bird.markers)
-  print(paste(length(shared.markers), "shared marker genes")) # 475-500
+  print(paste(length(shared.markers), "shared marker genes")) 
   
   # Average across clusters; log1p; across-cluster mean
   bird.avg <- score_genes(bird, top_markers = shared.markers)
   mouse.avg <- score_genes(mouse, top_markers = shared.markers)
   
   # 6. Correlate. 
-  C <- cor(bird.avg, mouse.avg) # 18 x 7
-  C <- as.data.frame(C)
-  # Bird - delete 7,8,Pre. 
-  # Mouse - delete Serpinf1, Sncg
-  if (cell_type == "Gaba"){
-    # Remove small subclasses or those that correspond to subcortical INs
-    C <- C[!(rownames(C) %in% c("7", "8", "Pre")), !(colnames(C) %in% c("Serpinf1", "Sncg"))]
+  C <- cor(mouse.avg, bird.avg) 
+  # Throw out un-matched songbird cells. 
+  if (cell_type == "GABA"){
+    C <- C[!rownames(C) %in% c("Serpinf1", "Sncg"), !colnames(C) %in% c("Pre", "7", "8")]
     # Reorder
-  } else if (cell_type == "Glut"){
+    C <- C[c("Meis2", "Sst", "Pvalb", "Vip", "Lamp5"),]
+    }
+  else if (cell_type == "Glut"){
     C <- C[, !(colnames(C) %in% c("NP", "CR"))]
     rownames(C) <- sapply(rownames(C), function(x){str_replace(x, "_Glut", "")})
   }
-  
-  # Fixed color range
-  colors <- seq(-.3,.35,length=100)
-  colormap <- hcl.colors(99, "RdYlBu",rev=TRUE)
-  # Make and save the colormap
-  pdf(file = paste0("./figures/corr_", cell_type, ".pdf"))
-  heatmap.2(as.matrix(C), col = colormap, 
-            breaks=colors, density.info="none", trace="none", 
-            dendrogram=c("both"), symm=F,symkey=F,symbreaks=T, 
-            srtCol=45, srtRow = 0, key.title = "correlation", key.xlab = "")
-  
+  # Plot it
+  fontsize <- 25
+  # consistent color range for GABA and Glut:
+  mat_breaks <- seq(-0.3, 0.4, length.out = 100) 
+  pdf(file = paste0("./figures/corr_", cell_type, ".pdf")) # save
+  setHook("grid.newpage", 
+          function() pushViewport(viewport(x=1,y=1, width=.9, height=0.7, 
+                                           name="vp", just=c("right","top"))), action="prepend")
+  pheatmap(C,  legend=TRUE, main = "RNA correlation", breaks=mat_breaks,
+           legend_breaks = c(-.3, 0, 0.3),  legend_labels = c("-0.3", "0", "0.3"),
+           fontsize=fontsize, srtCol=45)
+  setHook("grid.newpage", NULL, "replace")
+  grid.text("mouse clusters", x=-0.07, y = 0.4, rot=90, gp=gpar(fontsize=fontsize))
+  grid.text("songbird clusters", y=-0.07, x=.4, gp=gpar(fontsize=fontsize))
   dev.off()
-  # Save
-  write.table(C, paste0("./data/correlation_", cell_type, ".csv"))
-  write.table(bird.avg, paste0("./data/marker_expr_bird_", cell_type, ".csv"))
-  write.table(mouse.avg, paste0("./data/marker_expr_mouse_ ", cell_type, ".csv"))
-  # Todo: shuffling to get significance. 
 }
 
 
