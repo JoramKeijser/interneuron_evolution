@@ -55,7 +55,7 @@ for (cell_type in c("Glut", "GABA")){
   bird.avg <- score_genes(bird, top_markers = shared.markers)
   mouse.avg <- score_genes(mouse, top_markers = shared.markers)
   
-  # 6. Correlate. 
+  # Correlate
   C <- cor(mouse.avg, bird.avg) 
   # Throw out un-matched songbird cells. 
   if (cell_type == "GABA"){
@@ -65,7 +65,7 @@ for (cell_type in c("Glut", "GABA")){
     }
   else if (cell_type == "Glut"){
     C <- C[, !(colnames(C) %in% c("NP", "CR"))]
-    rownames(C) <- sapply(rownames(C), function(x){str_replace(x, "_Glut", "")})
+    colnames(C) <- sapply(colnames(C), function(x){str_replace(x, "_Glut", "")})
   }
   # Plot it
   fontsize <- 25
