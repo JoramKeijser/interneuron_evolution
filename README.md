@@ -37,4 +37,4 @@ The analysis pipeline is shown in the figure below. Each step corresponds to one
 
 ## Acknowledgements
 
-Thanks to Patrick Mineault for writing the [Good Research Codebook](https://goodresearch.dev/). 
+Thanks to Patrick Mineault for writing the [Good Research Codebook](https://goodresearch.dev/) that we used as guideline for developing this code. 
