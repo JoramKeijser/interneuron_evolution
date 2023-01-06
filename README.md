@@ -24,8 +24,8 @@ pip install -e .
 The code is organized into the following folders:
 
 - `scripts` contains scripts that run the analyses
-- `src` contains the code that is shared by several sripts
-- `data` will contain the data after running the download_data.sh (see Installation above)
+- `src` contains the code that is shared by several scripts
+- `data` will contain the data after running download_data.sh (see Installation above)
 - `figures` contains the figures
 - `results` contains text files 
  
