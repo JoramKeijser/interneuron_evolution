@@ -40,5 +40,5 @@ cd elfn1_evolution
 ```
 Run the entire pipeline:
 ```
-./pipeline
+./run_pipeline.sh
 ``` 
