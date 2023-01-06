@@ -2,6 +2,7 @@ name: elfn1_env
 channels:
   - defaults
   - bioconda
+  - conda-forge
 dependencies:
   - r-tidyverse
   - r-seurat
