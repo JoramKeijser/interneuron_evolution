@@ -3,6 +3,7 @@ library(dplyr)
 library(Seurat)
 library(SeuratDisk)
 library(pheatmap)
+library(stringr)
 
 # Integrated analysis: standard workflow 
 integrated.analysis <- function(combined.seurat, scale = FALSE){
