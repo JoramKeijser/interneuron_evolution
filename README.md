@@ -35,6 +35,18 @@ The analysis pipeline is shown in the figure below. Each step corresponds to one
 
 ![figures1](./figures/paper_figs/figures1.png)
 
+Execute the following code to run the pipeline from beginning to end:
+```
+cd elfn1_evolution
+conda activate elfn1_env
+./scripts/download_data.sh # Downloads data into data/raw
+./scrtipts/preprocess.sh # Puts data into Seurat and AnnData files
+python ./scripts/visualize_expression.py # UMAPs and violin plots
+Rscript ./scripts/correlation.R # correlate gene expression of birds and mice
+Rscript ./scripts/integrate.R # integrate bird and mouse data
+python ./scripts/integrated_umaps.py # visualize integrated data
+```
+
 ## Acknowledgements
 
 Thanks to Patrick Mineault for writing the [Good Research Codebook](https://goodresearch.dev/) that we used as guideline for developing this code. 
