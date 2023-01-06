@@ -9,8 +9,7 @@ Make a copy of this repo cd into the root folder of the repo, and download the r
 ```
 git clone https://github.com/JoramKeijser/elfn1_evolution/
 cd elfn1_evolution
-mkdir data 
-wget https://zenodo.org/...
+./scripts/download_data.sh
 ```
 Recreate the conda environment:
 ```
