@@ -23,7 +23,7 @@ for (cell_type in c("Glut", "GABA")){
   
   # 0. Select only GABAergic or glutametergic cells
   if (cell_type == "GABA"){
-    bird <- bird[, bird@meta.data$cluster_int_sub2 %>% startsWith("GABA")]  # 4956 samples
+    bird <- bird[, bird@meta.data$cluster_int_sub2 %>% startsWith("GABA")]  # 640 samples
     mouse <- mouse[, mouse@meta.data$class == "GABAergic"] # 6125 samples
     # Merge bird clusters into coarser subclasses 
     bird@meta.data <- bird@meta.data %>% mutate(subclass = 
@@ -35,7 +35,7 @@ for (cell_type in c("Glut", "GABA")){
                                                          "GABA-Pre" = "Pre", ))
 
   } else if (cell_type == "Glut"){
-    bird <- bird[,sapply(bird@meta.data$cluster_int_sub2, function(x){grepl("Glut", x)})]  # 640 samples
+    bird <- bird[,sapply(bird@meta.data$cluster_int_sub2, function(x){grepl("Glut", x)})]  # 4956 samples
     bird@meta.data  <- bird@meta.data %>% mutate(subclass = cluster_int_sub2)
     mouse <- mouse[, mouse@meta.data$class == "Glutamatergic"] # 7366 samples
   }
