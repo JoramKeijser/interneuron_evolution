@@ -2,13 +2,7 @@
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
-rm(list = ls())
-gc()
-
-# Where to load from and save to
-projectdir <- "/home/joram/Dropbox/elfn1_evolution"
-setwd(projectdir)  
-source("./src/preprocessing_utils.R") # function recode_genes & save dirs
+source("./src/preprocessing_utils.R") # function recode_genes
 datadir <- "./data/raw/tosches/"
 species_list <- c("turtle", "lizard")
 

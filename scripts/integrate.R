@@ -1,6 +1,4 @@
 # Integrate bird and mouse samples
-projectdir <- "/home/joram/Dropbox/elfn1_evolution" # update this
-setwd(projectdir)  
 # Directories where to load and save data 
 datadir <- "./data/seurat/"
 savedir_seurat <- "./data/seurat/"

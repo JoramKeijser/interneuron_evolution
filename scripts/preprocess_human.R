@@ -2,11 +2,6 @@
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
-rm(list=ls())
-
-# Where to load from and save to
-projectdir <- "/home/joram/Dropbox/elfn1_evolution"
-setwd(projectdir)  
 source("./src/preprocessing_utils.R") # function recode_genes & save dirs
 datadir <- "./data/raw/bakken/"
 

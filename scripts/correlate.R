@@ -1,6 +1,4 @@
 # Correlate gene expression between clusters
-projectdir <- "/home/joram/Dropbox/elfn1_evolution"
-setwd(projectdir)  
 source("./src/seurat_utils.R")
 
 for (cell_type in c("Glut", "GABA")){
