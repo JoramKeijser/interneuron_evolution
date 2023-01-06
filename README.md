@@ -35,4 +35,6 @@ The analysis pipeline is shown in the figure below. Each step corresponds to one
 
 ![figures1](./figures/paper_figs/figures1.png)
 
-Preprocess the raw data by putting them into AnnData and Seurat files. Then run the other functions
+## Acknowledgements
+
+Thanks to Patrick Mineault for writing the [Good Research Codebook](https://goodresearch.dev/). 
