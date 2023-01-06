@@ -9,12 +9,11 @@ Make a copy of this repo cd into the root folder of the repo, and download the r
 ```
 git clone https://github.com/JoramKeijser/elfn1_evolution/
 cd elfn1_evolution
-mkdir data 
-wget https://zenodo.org/...
+./scripts/download_data.sh
 ```
-Recreate the conda environment:
+Recreate the conda environment to install the required Python and R packages/libraries. 
 ```
-conda env create -n cb --file environment.yml
+conda env create --name elfn1_env --file environment.yml
 ```
 Install the project:
 ```
@@ -26,7 +25,7 @@ The code is organized into the following folders:
 
 - `scripts` contains scripts that run the analyses
 - `src` contains the code that is shared by several sripts
-- `data` will contain the data after running the code under `Installation`
+- `data` will contain the data after running the download_data.sh (see Installation above)
 - `figures` contains the figures
 - `results` contains text files 
  
