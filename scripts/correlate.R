@@ -8,7 +8,7 @@ for (cell_type in c("Glut", "GABA")){
   # Select largest dataset: zebra finch (not bengalese)
   bird <- bird[, bird@meta.data$species == 'zf'] # 25392 samples within 1 assay 
   # Load mouse data
-  mouse <- LoadH5Seurat("./data/seurat/tasic/mouse.h5seurat")
+  mouse <- LoadH5Seurat("./data/seurat/mouse.h5seurat")
   mouse # 42094 features across 15413 samples within 1 assay 
   
   # 0. Select only GABAergic or glutametergic cells
