@@ -2,19 +2,19 @@
 library(dplyr)
 library(Seurat)
 library(SeuratDisk)
+library(pheatmap)
 
 # Integrated analysis: standard workflow 
 integrated.analysis <- function(combined.seurat, scale = FALSE){
   if (scale){
     combined.seurat <- ScaleData(combined.seurat, verbose = TRUE)
   }
-  combined.seurat <- RunPCA(combined.seurat, npcs = 30, verbose = TRUE)
-  combined.seurat <- RunUMAP(combined.seurat, reduction = "pca", dims = 1:30)
-  combined.seurat <- FindNeighbors(combined.seurat, reduction = "pca", dims = 1:30)
-  combined.seurat <- FindClusters(combined.seurat, resolution = 0.5)
+  combined.seurat <- RunPCA(combined.seurat, npcs = 30)
+  combined.seurat <- RunUMAP(combined.seurat, reduction = "pca", dims=1:30)
+  combined.seurat <- FindNeighbors(combined.seurat, reduction = "pca", dims=1:30)
+  combined.seurat <- FindClusters(combined.seurat)
   return(combined.seurat)
 }
-
 
 # Standard workflow for clustering
 clustering_pipeline <- function(seurat_obj, 
@@ -48,8 +48,7 @@ get_top_markers <- function(seurat_obj){
 }
 
 # Specificity score
-# 4. Average across clusters. slot = 'counts' -> don't exponentiate
-
+# Average across clusters. slot = 'counts' -> don't exponentiate
 score_genes <- function(seurat_obj, top_markers){
   # Average within Idents
   avg.expr <- AverageExpression(seurat_obj, features = top_markers,
