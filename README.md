@@ -5,11 +5,9 @@ Analysing the evolution of cortical interneurons using single cell RNA sequencin
 
 ## Installation
 
-Make a copy of this repo cd into the root folder of the repo, and download the raw data.
+Clone this repository:
 ```
 git clone https://github.com/JoramKeijser/elfn1_evolution/
-cd elfn1_evolution
-./scripts/download_data.sh
 ```
 Recreate the conda environment to install the required Python and R packages/libraries. 
 ```
@@ -35,12 +33,12 @@ The analysis pipeline is shown in the figure below. Each step corresponds to one
 
 ![figures1](./figures/paper_figs/figures1.png)
 
-Execute the following code to run the pipeline from beginning to end:
+Cd to the repo directory, and download the data:
 ```
 cd elfn1_evolution
-./pipeline
+./scripts/download_data.sh
 ```
-
-## Acknowledgements
-
-Thanks to Patrick Mineault for writing the [Good Research Codebook](https://goodresearch.dev/) that we used as guideline for developing this code. 
+Run the entire pipeline:
+```
+./pipeline
+``` 
