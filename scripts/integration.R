@@ -1,15 +1,12 @@
 # Integrate bird and mouse samples
-library(dplyr)
-library(Seurat)
-library(SeuratDisk)
-
-use_SCT <- TRUE # To do: use SCTransform or not?
-projectdir <- "/home/joram/Dropbox/elfn1_evolution"
+projectdir <- "/home/joram/Dropbox/elfn1_evolution" # update this
 setwd(projectdir)  
-source("./src/seurat_utils.R") # holds integrated.analysis pipeline
+# Directories where to load and save data 
 datadir <- "./data/seurat/"
 savedir_seurat <- "./data/seurat/"
 savedir_anndata <- "./data/anndata/"
+source("./src/seurat_utils.R") # integrated.analysis & packages
+use_SCT <- TRUE 
 
 # Separately treat exc and inh neurons
 for (selected_class in c('GABAergic',  'Glutamatergic')){

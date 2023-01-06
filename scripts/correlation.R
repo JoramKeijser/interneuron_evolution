@@ -1,12 +1,4 @@
 # Correlate gene expression between clusters
-library(dplyr)
-library(Seurat)
-library(SeuratDisk)
-library(gplots)
-library(stringr)
-library(pheatmap)
-rm(list = ls())
-
 projectdir <- "/home/joram/Dropbox/elfn1_evolution"
 setwd(projectdir)  
 source("./src/seurat_utils.R")
@@ -26,13 +18,13 @@ for (cell_type in c("Glut", "GABA")){
     bird <- bird[, bird@meta.data$cluster_int_sub2 %>% startsWith("GABA")]  # 640 samples
     mouse <- mouse[, mouse@meta.data$class == "GABAergic"] # 6125 samples
     # Merge bird clusters into coarser subclasses 
-    bird@meta.data <- bird@meta.data %>% mutate(subclass = 
-                                                  recode(cluster_int_sub2, 
-                                                         "GABA-1-1" = "1", "GABA-1-2" = "1",
-                                                         "GABA-2" = "2", "GABA-3" = "3", "GABA-4" = "4", 
-                                                         "GABA-5-1" = "5", "GABA-5-2" = "5", "GABA-5-3" = "5",
-                                                         "GABA-6" = "6", "GABA-7" = "7", "GABA-8"="8",
-                                                         "GABA-Pre" = "Pre", ))
+    bird@meta.data <- bird@meta.data %>% 
+      mutate(subclass = recode(cluster_int_sub2, 
+                      "GABA-1-1" = "1", "GABA-1-2" = "1",
+                       "GABA-2" = "2", "GABA-3" = "3", "GABA-4" = "4", 
+                       "GABA-5-1" = "5", "GABA-5-2" = "5", "GABA-5-3" = "5",
+                       "GABA-6" = "6", "GABA-7" = "7", "GABA-8"="8",
+                       "GABA-Pre" = "Pre", ))
 
   } else if (cell_type == "Glut"){
     bird <- bird[,sapply(bird@meta.data$cluster_int_sub2, function(x){grepl("Glut", x)})]  # 4956 samples
