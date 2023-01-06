@@ -38,12 +38,7 @@ The analysis pipeline is shown in the figure below. Each step corresponds to one
 Execute the following code to run the pipeline from beginning to end:
 ```
 cd elfn1_evolution
-conda activate elfn1_env
-./scrtipts/preprocess.sh # Puts data into Seurat and AnnData files
-python ./scripts/visualize_expression.py # UMAPs and violin plots
-Rscript ./scripts/correlation.R # correlate gene expression of birds and mice
-Rscript ./scripts/integration.R # integrate bird and mouse data
-python ./scripts/integrated_umaps.py # visualize integrated data
+./pipeline
 ```
 
 ## Acknowledgements
