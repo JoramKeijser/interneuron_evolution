@@ -37,12 +37,12 @@ The analysis pipeline is shown in the figure below. Each step corresponds to one
 
 ![figures1](./figures/paper_figs/figures1.png)
 
-Cd to the repo directory, and download the data:
+Still from within the repo directory, and download the data:
 ```
 cd elfn1_evolution
 ./scripts/download_data.sh
 ```
 Run the entire pipeline:
 ```
-./run_pipeline.sh
+./scripts/run_pipeline.sh
 ``` 
