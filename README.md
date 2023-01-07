@@ -4,7 +4,7 @@ Analysing the evolution of cortical interneurons using single cell RNA sequencin
 ![figure1](./figures/paper_figs/figure1.png)
 
 ## Requirements
-This code was developed and tested in Ubuntu 22.04.1. Running the code requires 64GB of RAM. 
+This code was developed and tested in Ubuntu 22.04.1 and 22.04.3. Running the code requires 64GB of RAM. 
 
 ## Installation
 
@@ -14,6 +14,7 @@ git clone https://github.com/JoramKeijser/elfn1_evolution/
 ```
 Recreate the conda environment to install the required Python and R packages/libraries. 
 ```
+cd elfn1_evolution
 conda env create --name elfn1_env --file environment.yml
 ```
 Install the project:
