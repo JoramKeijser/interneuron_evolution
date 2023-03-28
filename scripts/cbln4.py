@@ -9,12 +9,9 @@ sns.set_palette("colorblind")
 sc.settings.figdir = "./figures/"
 
 seed = 1029 # set randomness for dim. reduction and clustering
-#data_dir = "../data/anndata/" 
-#dataset='mouse'
-#adata = ad.read_h5ad(f"{data_dir}{dataset}.h5ad") #  15413 × 42094
-data_dir = "../transcriptomic-axes/results/anndata/"
-dataset='tasic'
-adata = ad.read_h5ad(f"{data_dir}{dataset}_raw.h5ad")
+data_dir = "./data/anndata/" 
+dataset='mouse'
+adata = ad.read_h5ad(f"{data_dir}{dataset}.h5ad")
 print(adata)
 print(adata.var_names)
 

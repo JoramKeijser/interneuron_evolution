@@ -10,7 +10,7 @@ sc.settings.figdir = "./figures/"
 
 def main():
     seed = 1029 # set randomness for dim. reduction and clustering
-    data_dir = "../tPC_data/"
+    data_dir = "./data/"
     genes = ['Elfn1', 'Cbln4', 'Calb2'] # visualize these
     # Upper lim. mapped to color. Higher expressions are clipped. 
     max_expr = {'tosches': 2.2, 'colquitt': 4.2, "tasic": 1.75, "bakken": 1.25}
