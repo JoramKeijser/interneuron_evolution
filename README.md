@@ -1,6 +1,9 @@
 ## Interneuron evolution
 Analysing the evolution of cortical interneurons using single cell RNA sequencing data. This code accompanies the paper [Cortical interneurons: fit for function and fit to function?](https://doi.org/10.1101/2023.02.23.529671), in which we constrast a functional (or optimisation) view of interneurons with evolutionary-developmental data. Also see the [elfn1_reconstruction repo](https://github.com/JoramKeijser/elfn1_reconstruction) for the code to reproduce ancestral protein reconstruction from the paper.  
 
+
+[![DOI](https://zenodo.org/badge/570245794.svg)](https://zenodo.org/badge/latestdoi/570245794)
+
 ![figure1](./figures/paper_figs/figure1.png)
 
 ## Requirements
